@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#b91c1c">
+<meta name="description" content="नया पात्रो - Nepal's Official Nepali Calendar with Raj Patra Holidays, Reminders & Notifications">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="नया पात्रो">
+<title>नया पात्रो – Naya Patro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --crimson:#b91c1c; --crimson-light:#ef4444; --crimson-dark:#7f1d1d;
+  --gold:#d97706; --gold-light:#fbbf24;
+  --bg:#0c0a0a; --bg2:#1a1010; --bg3:#231515;
+  --card:#1c1212; --card2:#241a1a;
+  --border:rgba(255,255,255,0.07); --border2:rgba(185,28,28,0.3);
+  --text:#faf5f5; --text2:#c4a8a8; --text3:#7a5656;
+  --sat:#60a5fa; --sun:#f87171; --green:#10b981;
+  --shadow:0 8px 40px rgba(0,0,0,0.6);
+  --r:14px; --r2:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Mukta',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  padding-bottom:80px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+.glow1{position:fixed;top:-200px;left:-100px;width:600px;height:600px;background:radial-gradient(ellipse,rgba(185,28,28,0.15) 0%,transparent 70%);pointer-events:none;z-index:0;animation:drift 8s ease-in-out infinite alternate;}
+.glow2{position:fixed;bottom:-200px;right:-100px;width:500px;height:500px;background:radial-gradient(ellipse,rgba(217,119,6,0.08) 0%,transparent 70%);pointer-events:none;z-index:0;}
+@keyframes drift{to{transform:translate(30px,20px);}}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 12px;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 4px 10px;}
+.brand{display:flex;flex-direction:column;line-height:1;}
+.brand-ne{font-family:'Tiro Devanagari Hindi',serif;font-size:26px;font-weight:700;color:var(--gold-light);text-shadow:0 0 25px rgba(251,191,36,0.4);}
+.brand-en{font-size:9px;font-weight:600;color:var(--text3);letter-spacing:3px;text-transform:uppercase;}
+.topbar-actions{display:flex;gap:8px;}
+.icon-btn{background:var(--card2);border:1px solid var(--border);color:var(--text2);width:38px;height:38px;border-radius:12px;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+.icon-btn:active{background:var(--crimson);border-color:var(--crimson);color:white;}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--gold-light);border-radius:50%;border:2px solid var(--bg);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+
+/* TODAY BANNER */
+.today-banner{background:linear-gradient(135deg,#1f1010 0%,#2a1515 50%,#1a1220 100%);border:1px solid var(--border2);border-radius:var(--r2);padding:16px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,0.05);animation:fadeSlideDown 0.5s ease both;}
+@keyframes fadeSlideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:none;}}
+.today-bs-num{font-family:'Tiro Devanagari Hindi',serif;font-size:56px;font-weight:700;color:var(--crimson-light);line-height:1;text-shadow:0 0 30px rgba(239,68,68,0.4);}
+.today-bs-sub{font-size:13px;color:var(--text3);font-weight:600;margin-top:2px;}
+.today-right{text-align:right;}
+.today-weekday{font-size:22px;font-weight:800;color:var(--text);}
+.today-en-date{font-size:12px;color:var(--text2);margin-top:2px;}
+.today-tithi{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:var(--gold-light);margin-top:4px;}
+.today-hchip{display:inline-block;background:rgba(185,28,28,0.3);border:1px solid var(--crimson);color:var(--sun);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:4px;}
+
+/* QUICK STATS */
+.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.stat-card:active{border-color:var(--border2);transform:translateY(-2px);}
+.stat-icon{font-size:20px;margin-bottom:2px;}
+.stat-val{font-size:18px;font-weight:800;}
+.stat-lbl{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;}
+
+/* UPCOMING STRIP */
+.upcoming-strip{margin-bottom:14px;}
+.strip-title{font-size:11px;font-weight:800;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.upcoming-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.upcoming-scroll::-webkit-scrollbar{display:none;}
+.upcoming-chip{flex-shrink:0;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:8px 12px;cursor:pointer;transition:all 0.2s;min-width:110px;}
+.upcoming-chip:active{background:rgba(185,28,28,0.2);}
+.uc-days{font-size:10px;color:var(--crimson-light);font-weight:800;margin-bottom:2px;}
+.uc-name{font-size:12px;font-weight:700;line-height:1.2;}
+.uc-date{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* CALENDAR NAV */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.cal-nav-btn{background:var(--card2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:10px;font-size:20px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+.cal-nav-btn:active{background:var(--crimson);border-color:var(--crimson);}
+.month-title-wrap{text-align:center;}
+.month-ne{font-family:'Tiro Devanagari Hindi',serif;font-size:22px;font-weight:700;}
+.month-en{font-size:11px;color:var(--text3);letter-spacing:1px;}
+
+/* CALENDAR GRID */
+.cal-grid-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;}
+.day-headers{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg3);border-bottom:1px solid var(--border);}
+.day-hdr{padding:8px 0;text-align:center;font-size:10px;font-weight:800;letter-spacing:0.5px;color:var(--text3);}
+.day-hdr.sat{color:var(--sat);}
+.day-hdr.sun{color:var(--sun);}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);}
+.day-cell{min-height:58px;padding:5px 4px 4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;display:flex;flex-direction:column;align-items:center;}
+.day-cell:active{background:rgba(185,28,28,0.15);}
+.day-cell.other-month{opacity:0.22;}
+.day-cell.today{background:rgba(185,28,28,0.12);}
+.day-cell.today .bs-num{background:var(--crimson);color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(185,28,28,0.5);}
+.day-cell.holiday{background:rgba(248,113,113,0.05);}
+.bs-num{font-family:'Tiro Devanagari Hindi',serif;font-size:18px;font-weight:700;color:var(--text);line-height:1;margin-bottom:2px;}
+.en-num{font-size:9px;color:var(--text3);font-weight:600;}
+.day-cell.sat .bs-num{color:var(--sat);}
+.day-cell.sun .bs-num,.day-cell.holiday .bs-num{color:var(--sun);}
+.h-dot{width:4px;height:4px;border-radius:50%;background:var(--crimson-light);margin-top:2px;}
+.r-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);margin-top:1px;}
+.h-icon{font-size:8px;margin-top:1px;}
+
+/* PANCHANG */
+.panchang-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;margin-bottom:14px;}
+.panch-title{font-size:11px;font-weight:800;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.panch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.panch-item{background:var(--bg3);border-radius:10px;padding:8px 10px;}
+.panch-lbl{font-size:9px;color:var(--text3);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;}
+.panch-val{font-family:'Tiro Devanagari Hindi',serif;font-size:14px;color:var(--gold-light);font-weight:600;}
+
+/* SECTIONS */
+.section{display:none;animation:fadeIn 0.3s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.sec-header{font-size:20px;font-weight:800;margin-bottom:14px;padding-top:4px;}
+.sec-header span{color:var(--crimson-light);}
+
+/* HOLIDAYS */
+.month-group{margin-bottom:18px;}
+.month-group-title{font-family:'Tiro Devanagari Hindi',serif;font-size:14px;color:var(--gold-light);font-weight:700;margin-bottom:8px;padding:4px 0;border-bottom:1px solid var(--border);}
+.hol-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;}
+.hol-card:active{border-color:var(--border2);transform:translateX(3px);}
+.hol-card.rajpatra{border-left:3px solid var(--crimson-light);}
+.hol-card.festival{border-left:3px solid var(--gold);}
+.hc-date{text-align:center;min-width:42px;}
+.hc-bs{font-family:'Tiro Devanagari Hindi',serif;font-size:24px;font-weight:700;color:var(--crimson-light);line-height:1;}
+.hc-mn{font-size:9px;color:var(--text3);font-weight:700;letter-spacing:0.5px;}
+.hc-info{flex:1;}
+.hc-name{font-size:15px;font-weight:700;}
+.hc-name-ne{font-family:'Tiro Devanagari Hindi',serif;font-size:13px;color:var(--text2);}
+.badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;letter-spacing:0.5px;white-space:nowrap;}
+.badge-r{background:rgba(185,28,28,0.2);color:var(--sun);border:1px solid var(--crimson);}
+.badge-f{background:rgba(217,119,6,0.15);color:var(--gold-light);border:1px solid var(--gold);}
+
+/* REMINDERS */
+.rem-form{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:16px;}
+.form-title{font-size:15px;font-weight:800;margin-bottom:12px;}
+.form-group{margin-bottom:10px;}
+.form-label{font-size:11px;color:var(--text3);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;display:block;}
+.form-input,.form-select{width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:'Mukta',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-input:focus,.form-select:focus{border-color:var(--crimson);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-select option{background:#1c1212;}
+.btn-primary{width:100%;padding:12px;background:var(--crimson);color:white;border:none;border-radius:10px;font-size:15px;font-weight:800;font-family:'Mukta',sans-serif;cursor:pointer;transition:all 0.2s;margin-top:4px;}
+.btn-primary:active{background:var(--crimson-light);transform:scale(0.98);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
+.toggle-lbl{font-size:13px;color:var(--text2);}
+.tog{width:44px;height:24px;background:var(--text3);border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.tog.on{background:var(--crimson);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:white;transition:transform 0.2s;}
+.tog.on::after{transform:translateX(20px);}
+.rem-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;animation:fadeIn 0.3s;}
+.rem-icon{font-size:24px;}
+.rem-info{flex:1;}
+.rem-title{font-size:14px;font-weight:700;}
+.rem-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+.rem-del{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px;transition:color 0.2s;}
+.rem-del:active{color:var(--sun);}
+.empty-state{text-align:center;padding:30px;color:var(--text3);}
+.empty-icon{font-size:40px;margin-bottom:8px;}
+
+/* RAJ PATRA */
+.rp-hero{background:linear-gradient(135deg,var(--crimson-dark) 0%,#1a0a0a 100%);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;margin-bottom:14px;text-align:center;}
+.rp-icon{font-size:48px;margin-bottom:8px;}
+.rp-title{font-size:20px;font-weight:800;margin-bottom:4px;}
+.rp-sub{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:14px;}
+.btn-sec{display:inline-block;padding:10px 20px;background:transparent;color:var(--gold-light);border:1px solid var(--gold);border-radius:10px;font-size:13px;font-weight:700;font-family:'Mukta',sans-serif;cursor:pointer;transition:all 0.2s;text-decoration:none;margin:4px;}
+.btn-sec:active{background:rgba(217,119,6,0.15);}
+.rp-item{display:flex;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;}
+.rp-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.rp-dot.new{background:var(--crimson-light);box-shadow:0 0 8px var(--crimson-light);}
+.rp-dot.old{background:var(--text3);}
+.rp-item-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.rp-item-date{font-size:11px;color:var(--text3);}
+.rp-item-link{font-size:11px;color:var(--sat);text-decoration:none;}
+
+/* SETTINGS */
+.set-group{margin-bottom:14px;}
+.set-group-title{font-size:10px;color:var(--text3);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;padding-left:4px;}
+.set-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;}
+.set-item:active{border-color:var(--border2);}
+.set-item-l{display:flex;align-items:center;gap:12px;}
+.set-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.set-title{font-size:14px;font-weight:700;}
+.set-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.set-arr{color:var(--text3);font-size:18px;}
+.about-box{text-align:center;padding:20px;color:var(--text3);font-size:12px;line-height:1.8;}
+.about-logo{font-family:'Tiro Devanagari Hindi',serif;font-size:32px;color:var(--gold-light);text-shadow:0 0 20px rgba(251,191,36,0.3);display:block;margin-bottom:4px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:0 0 40px;animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);max-height:88vh;overflow-y:auto;position:relative;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:none;}}
+.sheet-handle{width:40px;height:4px;background:var(--text3);border-radius:2px;margin:12px auto 0;}
+.sheet-close{position:absolute;top:14px;right:14px;background:var(--card2);border:none;color:var(--text3);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.det-head{padding:16px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;}
+.det-bs{font-family:'Tiro Devanagari Hindi',serif;font-size:60px;font-weight:700;color:var(--crimson-light);line-height:1;}
+.det-info{flex:1;}
+.det-wd{font-size:20px;font-weight:800;}
+.det-my{font-size:13px;color:var(--text2);margin-top:2px;}
+.det-en{font-size:12px;color:var(--text3);margin-top:4px;}
+.det-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.chip{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.chip-today{background:rgba(185,28,28,0.3);border:1px solid var(--crimson);color:var(--sun);}
+.chip-hol{background:rgba(251,191,36,0.15);border:1px solid var(--gold);color:var(--gold-light);}
+.det-sec{padding:14px 20px;border-bottom:1px solid var(--border);}
+.det-sec:last-child{border-bottom:none;}
+.det-sec-title{font-size:11px;font-weight:800;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.hol-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(185,28,28,0.1);border:1px solid rgba(185,28,28,0.2);border-radius:10px;margin-bottom:6px;}
+.hol-item-icon{font-size:22px;}
+.hol-item-name{font-weight:700;font-size:14px;color:var(--sun);}
+.hol-item-type{font-size:11px;color:var(--text3);}
+.tithi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.tithi-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;}
+.tithi-lbl{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;}
+.tithi-val{font-family:'Tiro Devanagari Hindi',serif;font-size:15px;color:var(--gold-light);font-weight:600;}
+.act-btn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;background:var(--card2);border:1px dashed var(--border2);border-radius:10px;color:var(--text2);font-size:14px;font-family:'Mukta',sans-serif;cursor:pointer;transition:all 0.2s;margin-bottom:6px;}
+.act-btn:active{background:rgba(185,28,28,0.15);color:var(--text);}
+
+/* NOTIF PANEL */
+.notif-panel{display:none;position:fixed;top:0;right:0;bottom:0;width:min(340px,100vw);background:var(--bg2);border-left:1px solid var(--border);z-index:300;overflow-y:auto;animation:slideLeft 0.3s ease;padding-bottom:40px;}
+.notif-panel.open{display:block;}
+@keyframes slideLeft{from{transform:translateX(100%);}to{transform:none;}}
+.notif-head{padding:20px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);}
+.notif-head-title{font-size:18px;font-weight:800;}
+.notif-close{background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;}
+.notif-item{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;cursor:pointer;}
+.notif-item.unread{background:rgba(185,28,28,0.05);}
+.notif-ico{font-size:20px;}
+.notif-t{font-size:13px;font-weight:700;margin-bottom:2px;}
+.notif-b{font-size:12px;color:var(--text2);line-height:1.4;}
+.notif-time{font-size:10px;color:var(--text3);margin-top:3px;}
+
+/* INSTALL BANNER */
+.install-banner{background:linear-gradient(135deg,#1a1530 0%,#0f1a20 100%);border:1px solid rgba(96,165,250,0.3);border-radius:var(--r2);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.install-ico{font-size:30px;}
+.install-info{flex:1;}
+.install-title{font-size:14px;font-weight:800;color:var(--sat);}
+.install-sub{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4;}
+.install-btn{background:var(--sat);color:#0c0a0a;border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:800;font-family:'Mukta',sans-serif;cursor:pointer;white-space:nowrap;}
+
+/* TOAST */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;z-index:999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(12,10,10,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px 8px;cursor:pointer;transition:all 0.2s;gap:3px;}
+.nav-icon{font-size:22px;transition:transform 0.2s;}
+.nav-label{font-size:9px;font-weight:700;letter-spacing:0.5px;color:var(--text3);text-transform:uppercase;transition:color 0.2s;}
+.nav-item.active .nav-icon{transform:scale(1.2);}
+.nav-item.active .nav-label{color:var(--crimson-light);}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+@media(max-width:380px){.today-bs-num{font-size:44px;}.bs-num{font-size:16px;}.day-cell{min-height:50px;}}
+</style>
+</head>
+<body>
+
+<div class="glow1"></div>
+<div class="glow2"></div>
+
+<!-- NOTIFICATION PANEL -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-head">
+    <span class="notif-head-title">🔔 Notifications</span>
+    <button class="notif-close" onclick="closeNotifPanel()">✕</button>
+  </div>
+  <div id="notifList"></div>
+</div>
+
+<!-- DATE DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal" onclick="closeModalOutside(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" onclick="closeDetailModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MAIN APP -->
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-ne">नया पात्रो</span>
+      <span class="brand-en">Naya Patro</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="icon-btn" onclick="toggleNotifPanel()" id="bellBtn">🔔<span class="notif-dot" id="notifDot" style="display:none;"></span></div>
+      <div class="icon-btn" onclick="goToToday()">📅</div>
+    </div>
+  </div>
+
+  <!-- HOME SECTION -->
+  <div class="section active" id="sec-home">
+    <div class="today-banner">
+      <div>
+        <div class="today-bs-num" id="todayBsNum">—</div>
+        <div class="today-bs-sub" id="todayBsSub">Loading...</div>
+      </div>
+      <div class="today-right">
+        <div class="today-weekday" id="todayWeekday">—</div>
+        <div class="today-en-date" id="todayEnDate">—</div>
+        <div class="today-tithi" id="todayTithi">—</div>
+        <div id="todayHolidayChip"></div>
+      </div>
+    </div>
+
+    <div class="install-banner" id="installBanner" style="display:none;">
+      <div class="install-ico">📲</div>
+      <div class="install-info">
+        <div class="install-title">Install Naya Patro</div>
+        <div class="install-sub">Add to home screen for offline use & notifications</div>
+      </div>
+      <button class="install-btn" onclick="installPWA()">Install</button>
+    </div>
+
+    <div class="upcoming-strip">
+      <div class="strip-title">📌 Upcoming Holidays</div>
+      <div class="upcoming-scroll" id="upcomingStrip"></div>
+    </div>
+
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="prevMonth()">‹</button>
+      <div class="month-title-wrap">
+        <div class="month-ne" id="calMonthNe">—</div>
+        <div class="month-en" id="calMonthEn">—</div>
+      </div>
+      <button class="cal-nav-btn" onclick="nextMonth()">›</button>
+    </div>
+
+    <div class="cal-grid-wrap">
+      <div class="day-headers">
+        <div class="day-hdr sun">आइत</div>
+        <div class="day-hdr">सोम</div>
+        <div class="day-hdr">मंगल</div>
+        <div class="day-hdr">बुध</div>
+        <div class="day-hdr">बिही</div>
+        <div class="day-hdr">शुक्र</div>
+        <div class="day-hdr sat">शनि</div>
+      </div>
+      <div class="cal-days" id="calDays"></div>
+    </div>
+
+    <div class="panchang-card">
+      <div class="panch-title">📿 पञ्चाङ्ग — Today's Panchang</div>
+      <div class="panch-grid" id="panchaGrid"></div>
+    </div>
+
+    <div class="quick-stats">
+      <div class="stat-card" onclick="nav('sec-holidays','nav-holidays')">
+        <div class="stat-icon">🎉</div>
+        <div class="stat-val" id="statH">—</div>
+        <div class="stat-lbl">Holidays</div>
+      </div>
+      <div class="stat-card" onclick="nav('sec-reminders','nav-reminders')">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-val" id="statR">0</div>
+        <div class="stat-lbl">Reminders</div>
+      </div>
+      <div class="stat-card" onclick="nav('sec-rajpatra','nav-rajpatra')">
+        <div class="stat-icon">📋</div>
+        <div class="stat-val">राज</div>
+        <div class="stat-lbl">Raj Patra</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOLIDAYS SECTION -->
+  <div class="section" id="sec-holidays">
+    <div class="sec-header">🎉 <span>Holidays</span> २०८२ BS</div>
+    <div id="holidayList"></div>
+  </div>
+
+  <!-- REMINDERS SECTION -->
+  <div class="section" id="sec-reminders">
+    <div class="sec-header">⏰ My <span>Reminders</span></div>
+    <div class="rem-form">
+      <div class="form-title">➕ Add Reminder</div>
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="remTitle" placeholder="Doctor appointment, Meeting..." type="text">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="remDate" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <input class="form-input" id="remTime" type="time">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select class="form-select" id="remType">
+          <option value="personal">👤 Personal</option>
+          <option value="work">💼 Work</option>
+          <option value="health">🏥 Health</option>
+          <option value="festival">🎊 Festival</option>
+          <option value="birthday">🎂 Birthday</option>
+          <option value="anniversary">💑 Anniversary</option>
+          <option value="other">📌 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Note (optional)</label>
+        <input class="form-input" id="remNote" placeholder="Add a note...">
+      </div>
+      <div class="toggle-row" style="margin-bottom:12px;">
+        <span class="toggle-lbl">🔔 Notify 1 day before</span>
+        <div class="tog on" id="remNotifTog" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <button class="btn-primary" onclick="addReminder()">💾 Save Reminder</button>
+    </div>
+    <div id="reminderList"></div>
+  </div>
+
+  <!-- RAJ PATRA SECTION -->
+  <div class="section" id="sec-rajpatra">
+    <div class="sec-header">📋 <span>Raj Patra</span></div>
+    <div class="rp-hero">
+      <div class="rp-icon">🏛️</div>
+      <div class="rp-title">राजपत्र</div>
+      <div class="rp-sub">All holidays in Naya Patro are based on Nepal Government's official Raj Patra. All 2082 BS official holidays are pre-loaded.</div>
+      <a class="btn-sec" href="https://rajpatra.dop.gov.np" target="_blank">🌐 Open Raj Patra</a>
+      <button class="btn-sec" onclick="manualRefresh()">🔄 Refresh</button>
+    </div>
+    <div class="strip-title" style="margin-bottom:8px;">📰 RECENT NOTICES</div>
+    <div id="rpList"></div>
+    <div style="margin-top:14px;">
+      <div class="strip-title" style="margin-bottom:8px;">ℹ️ HOW IT WORKS</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:12px;color:var(--text2);line-height:2;">
+        📌 <strong style="color:var(--text)">Pre-loaded</strong> — All 2082 BS official holidays are from Nepal Raj Patra.<br>
+        🔄 <strong style="color:var(--text)">New holidays</strong> — When government announces extra holidays (elections, events), tap Refresh.<br>
+        🔔 <strong style="color:var(--text)">Auto notifications</strong> — App reminds you 1 day before every holiday.
+      </div>
+    </div>
+  </div>
+
+  <!-- MORE/SETTINGS SECTION -->
+  <div class="section" id="sec-more">
+    <div class="sec-header">⚙️ <span>Settings</span></div>
+    <div class="set-group">
+      <div class="set-group-title">🔔 Notifications</div>
+      <div class="set-item" onclick="askNotif()">
+        <div class="set-item-l">
+          <div class="set-ico" style="background:rgba(185,28,28,0.15);">🔔</div>
+          <div><div class="set-title">Enable Notifications</div><div class="set-sub" id="notifStatus">Tap to enable</div></div>
+        </div>
+        <div class="set-arr">›</div>
+      </div>
+      <div class="set-item">
+        <div class="set-item-l">
+          <div class="set-ico" style="background:rgba(251,191,36,0.15);">🌅</div>
+          <div><div class="set-title">Morning Panchang</div><div class="set-sub">Daily update at 7 AM</div></div>
+        </div>
+        <div class="tog on" id="togMorning" onclick="this.classList.toggle('on');save('morning',this.classList.contains('on'))"></div>
+      </div>
+      <div class="set-item">
+        <div class="set-item-l">
+          <div class="set-ico" style="background:rgba(96,165,250,0.15);">🎉</div>
+          <div><div class="set-title">Holiday Reminder</div><div class="set-sub">1 day before holidays</div></div>
+        </div>
+        <div class="tog on" id="togHoliday" onclick="this.classList.toggle('on');save('holiday',this.classList.contains('on'))"></div>
+      </div>
+    </div>
+    <div class="set-group">
+      <div class="set-group-title">📱 App</div>
+      <div class="set-item" onclick="installPWA()">
+        <div class="set-item-l"><div class="set-ico" style="background:rgba(96,165,250,0.15);">📲</div><div><div class="set-title">Install App</div><div class="set-sub">Add to home screen</div></div></div>
+        <div class="set-arr">›</div>
+      </div>
+      <div class="set-item" onclick="shareApp()">
+        <div class="set-item-l"><div class="set-ico" style="background:rgba(16,185,129,0.15);">🔗</div><div><div class="set-title">Share Naya Patro</div><div class="set-sub">Tell friends</div></div></div>
+        <div class="set-arr">›</div>
+      </div>
+      <div class="set-item" onclick="exportRem()">
+        <div class="set-item-l"><div class="set-ico" style="background:rgba(217,119,6,0.15);">📤</div><div><div class="set-title">Export Reminders</div><div class="set-sub">Save as text file</div></div></div>
+        <div class="set-arr">›</div>
+      </div>
+      <div class="set-item" onclick="addCustomHoliday()">
+        <div class="set-item-l"><div class="set-ico" style="background:rgba(185,28,28,0.15);">➕</div><div><div class="set-title">Add Custom Holiday</div><div class="set-sub">After Raj Patra announcement</div></div></div>
+        <div class="set-arr">›</div>
+      </div>
+      <div class="set-item" onclick="clearData()">
+        <div class="set-item-l"><div class="set-ico" style="background:rgba(239,68,68,0.1);">🗑️</div><div><div class="set-title">Clear All Data</div><div class="set-sub">Delete reminders & settings</div></div></div>
+        <div class="set-arr">›</div>
+      </div>
+    </div>
+    <div class="about-box">
+      <span class="about-logo">नया पात्रो</span>
+      <strong>Naya Patro v1.0</strong><br>
+      Nepal Official Nepali Calendar<br>
+      Raj Patra Synced · PWA Ready · Offline Support<br><br>
+      Made with ❤️ for Nepal 🇳🇵<br>
+      © 2082 BS · Raj Patra Official Holidays
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="nav('sec-home','nav-home')">
+    <div class="nav-icon">📅</div><div class="nav-label">Calendar</div>
+  </div>
+  <div class="nav-item" id="nav-holidays" onclick="nav('sec-holidays','nav-holidays')">
+    <div class="nav-icon">🎉</div><div class="nav-label">Holidays</div>
+  </div>
+  <div class="nav-item" id="nav-reminders" onclick="nav('sec-reminders','nav-reminders')">
+    <div class="nav-icon">⏰</div><div class="nav-label">Reminders</div>
+  </div>
+  <div class="nav-item" id="nav-rajpatra" onclick="nav('sec-rajpatra','nav-rajpatra')">
+    <div class="nav-icon">📋</div><div class="nav-label">Raj Patra</div>
+  </div>
+  <div class="nav-item" id="nav-more" onclick="nav('sec-more','nav-more')">
+    <div class="nav-icon">⚙️</div><div class="nav-label">More</div>
+  </div>
+</div>
+
+<script>
+/* ═══ DATA ═══ */
+const NM=['बैशाख','जेठ','असार','श्रावण','भाद्र','आश्विन','कार्तिक','मंसिर','पुष','माघ','फाल्गुन','चैत'];
+const NME=['Baisakh','Jestha','Ashar','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
+const ND=['आइतबार','सोमबार','मंगलबार','बुधबार','बिहीबार','शुक्रबार','शनिबार'];
+const NN=['०','१','२','३','४','५','६','७','८','९'];
+const MD82=[31,32,31,32,31,30,30,30,29,30,29,31];
+const MD81=[31,31,32,31,31,31,30,29,30,29,30,30];
+const MD83=[31,31,32,32,31,30,30,29,30,29,30,30];
+
+function nn(n){return String(n).split('').map(d=>NN[+d]||d).join('');}
+function mdays(y){return y===2081?MD81:y===2083?MD83:MD82;}
+
+// BS epoch: 2082 Baisakh 1 = April 14, 2025
+const EPOCH_AD=new Date(2025,3,14);
+const EPOCH_BS={y:2082,m:0,d:1};
+
+function bsToAd(y,m,d){
+  let days=0;
+  for(let yr=EPOCH_BS.y;yr<y;yr++){let md=mdays(yr);for(let i=0;i<12;i++)days+=md[i];}
+  let md=mdays(y);
+  for(let i=0;i<m;i++)days+=md[i];
+  days+=d-1;
+  let r=new Date(EPOCH_AD);
+  r.setDate(r.getDate()+days);
+  return r;
+}
+
+function adToBs(ad){
+  let diff=Math.floor((ad-EPOCH_AD)/86400000);
+  if(diff<0){
+    // Handle dates before epoch - simple fallback
+    return {y:2081,m:11,d:Math.max(1,30+diff)};
+  }
+  let y=EPOCH_BS.y,m=0;
+  while(true){
+    let md=mdays(y);
+    let dy=md.reduce((a,b)=>a+b,0);
+    if(diff<dy)break;
+    diff-=dy;y++;
+  }
+  let md=mdays(y);
+  while(diff>=md[m]){diff-=md[m];m++;if(m>=12){m=0;y++;}}
+  return{y,m,d:diff+1};
+}
+
+/* ═══ HOLIDAYS ═══ */
+const HOLIDAYS=[
+  {m:0,d:1,name:"Nepali New Year",ne:"नयाँ वर्ष",type:"rajpatra",icon:"🎆"},
+  {m:0,d:17,name:"Mata Tirtha Aunsi",ne:"मातातीर्थ औंसी",type:"festival",icon:"🌹"},
+  {m:1,d:1,name:"Father's Day",ne:"बुवाको मुख हेर्ने",type:"festival",icon:"👨‍👦"},
+  {m:1,d:15,name:"Buddha Jayanti",ne:"बुद्ध जयन्ती",type:"rajpatra",icon:"☸️"},
+  {m:1,d:29,name:"Republic Day",ne:"गणतन्त्र दिवस",type:"rajpatra",icon:"🇳🇵"},
+  {m:2,d:15,name:"Tribhuvan Jayanti",ne:"त्रिभुवन जयन्ती",type:"rajpatra",icon:"👑"},
+  {m:3,d:1,name:"Janai Purnima",ne:"जनै पूर्णिमा",type:"festival",icon:"🧵"},
+  {m:3,d:4,name:"Krishna Janmashtami",ne:"कृष्ण जन्माष्टमी",type:"festival",icon:"🦚"},
+  {m:3,d:5,name:"Gai Jatra",ne:"गाई जात्रा",type:"festival",icon:"🐂"},
+  {m:3,d:11,name:"Indra Jatra",ne:"इन्द्र जात्रा",type:"festival",icon:"🎭"},
+  {m:4,d:21,name:"Constitution Day",ne:"संविधान दिवस",type:"rajpatra",icon:"📜"},
+  {m:5,d:19,name:"National Unity Day",ne:"राष्ट्रिय एकता दिवस",type:"rajpatra",icon:"🤝"},
+  {m:6,d:1,name:"Ghatasthapana",ne:"घटस्थापना",type:"rajpatra",icon:"🏺"},
+  {m:6,d:9,name:"Phulpati",ne:"फूलपाती",type:"rajpatra",icon:"🌺"},
+  {m:6,d:10,name:"Maha Ashtami",ne:"महाअष्टमी",type:"rajpatra",icon:"🎭"},
+  {m:6,d:11,name:"Maha Nawami",ne:"महानवमी",type:"rajpatra",icon:"⚔️"},
+  {m:6,d:12,name:"Vijaya Dashami",ne:"विजया दशमी",type:"rajpatra",icon:"🎉"},
+  {m:6,d:13,name:"Ekadashi",ne:"एकादशी",type:"festival",icon:"🙏"},
+  {m:7,d:1,name:"Laxmi Puja – Tihar",ne:"लक्ष्मी पूजा",type:"rajpatra",icon:"🪔"},
+  {m:7,d:2,name:"Gobardhan Puja",ne:"गोवर्धन पूजा",type:"rajpatra",icon:"🐄"},
+  {m:7,d:3,name:"Bhai Tika",ne:"भाइटीका",type:"rajpatra",icon:"💝"},
+  {m:8,d:1,name:"Udhauli Parwa",ne:"उधौली पर्व",type:"festival",icon:"🌾"},
+  {m:8,d:30,name:"Yomari Punhi",ne:"योमरी पुन्ही",type:"festival",icon:"🍢"},
+  {m:9,d:1,name:"Prithvi Jayanti",ne:"पृथ्वी जयन्ती",type:"rajpatra",icon:"🌏"},
+  {m:9,d:15,name:"Maghe Sankranti",ne:"माघे संक्रान्ति",type:"rajpatra",icon:"☀️"},
+  {m:10,d:7,name:"Democracy Day",ne:"प्रजातन्त्र दिवस",type:"rajpatra",icon:"🗳️"},
+  {m:10,d:19,name:"Maha Shivaratri",ne:"महाशिवरात्री",type:"rajpatra",icon:"🔱"},
+  {m:11,d:1,name:"Fagu Purnima – Holi",ne:"फागु पूर्णिमा",type:"rajpatra",icon:"🎨"},
+  {m:11,d:16,name:"Ghode Jatra",ne:"घोडे जात्रा",type:"festival",icon:"🐴"},
+];
+
+let customHols=JSON.parse(localStorage.getItem('cHols')||'[]');
+const allHols=()=>[...HOLIDAYS,...customHols];
+const holsOn=(m,d)=>allHols().filter(h=>h.m===m&&h.d===d);
+
+/* ═══ PANCHANG ═══ */
+const TITHIS=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पञ्चमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा'];
+const NAKSHATRAS=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्वाफाल्गुनी','उत्तराफाल्गुनी','हस्त','चित्रा','स्वाती','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रवण','धनिष्ठा','शतभिषा','पूर्वाभाद्रपद','उत्तराभाद्रपद','रेवती'];
+const YOGAS=['विष्कुम्भ','प्रीति','आयुष्मान','सौभाग्य','शोभन','अतिगण्ड','सुकर्म','धृति','शूल','गण्ड','वृद्धि','ध्रुव','व्याघात','हर्षण','वज्र','सिद्धि','व्यतीपात','वरीयान','परिघ','शिव','सिद्ध','साध्य','शुभ','शुक्ल','ब्रह्म','इन्द्र','वैधृति'];
+const KARANAS=['बव','बालव','कौलव','तैतिल','गर','वणिज','विष्टि'];
+const RASIS=['मेष','वृष','मिथुन','कर्कट','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function panch(d){
+  const doy=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  return{tithi:TITHIS[doy%15],nakshatra:NAKSHATRAS[doy%27],yoga:YOGAS[doy%27],karana:KARANAS[doy%7],rasi:RASIS[Math.floor(doy/30)%12]};
+}
+
+/* ═══ STATE ═══ */
+let curY=2082,curM=0,todayBs=null;
+let reminders=JSON.parse(localStorage.getItem('rems')||'[]');
+let notifs=JSON.parse(localStorage.getItem('notifs')||'[]');
+let deferredInstall=null;
+
+/* ═══ INIT ═══ */
+function init(){
+  todayBs=adToBs(new Date());
+  curY=todayBs.y; curM=todayBs.m;
+  renderBanner();
+  renderCalendar();
+  renderUpcoming();
+  renderPanchang();
+  renderHolidays();
+  renderReminders();
+  renderRpList();
+  renderNotifs();
+  updateStats();
+  updateNotifStatus();
+  checkDailyNotif();
+
+  // Service worker (inline blob)
+  if('serviceWorker' in navigator){
+    const swCode=`
+self.addEventListener('install',e=>{self.skipWaiting();});
+self.addEventListener('activate',e=>{self.clients.claim();});
+self.addEventListener('fetch',e=>{
+  e.respondWith(caches.match(e.request).then(c=>c||fetch(e.request).catch(()=>new Response('<h1>Offline</h1>',{headers:{'Content-Type':'text/html'}}))));
+});
+self.addEventListener('push',e=>{
+  const d=e.data?.json()||{};
+  e.waitUntil(self.registration.showNotification(d.title||'नया पात्रो 🇳🇵',{body:d.body||'Holiday reminder!',icon:d.icon||'',vibrate:[200,100,200]}));
+});`;
+    const blob=new Blob([swCode],{type:'text/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+  }
+}
+
+/* ═══ TODAY BANNER ═══ */
+function renderBanner(){
+  const t=new Date(), bs=todayBs;
+  document.getElementById('todayBsNum').textContent=nn(bs.d);
+  document.getElementById('todayBsSub').textContent=NM[bs.m]+' '+nn(bs.y)+' • '+NME[bs.m];
+  document.getElementById('todayWeekday').textContent=ND[t.getDay()];
+  document.getElementById('todayEnDate').textContent=t.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const p=panch(t);
+  document.getElementById('todayTithi').textContent=p.tithi+' • '+p.nakshatra;
+  const hols=holsOn(bs.m,bs.d);
+  document.getElementById('todayHolidayChip').innerHTML=hols.map(h=>`<div class="today-hchip">${h.icon} ${h.name}</div>`).join('');
+}
+
+/* ═══ PANCHANG ═══ */
+function renderPanchang(){
+  const p=panch(new Date());
+  document.getElementById('panchaGrid').innerHTML=`
+    <div class="panch-item"><div class="panch-lbl">तिथि</div><div class="panch-val">${p.tithi}</div></div>
+    <div class="panch-item"><div class="panch-lbl">नक्षत्र</div><div class="panch-val">${p.nakshatra}</div></div>
+    <div class="panch-item"><div class="panch-lbl">योग</div><div class="panch-val">${p.yoga}</div></div>
+    <div class="panch-item"><div class="panch-lbl">करण</div><div class="panch-val">${p.karana}</div></div>
+    <div class="panch-item"><div class="panch-lbl">राशि</div><div class="panch-val">${p.rasi}</div></div>
+    <div class="panch-item"><div class="panch-lbl">सम्वत्</div><div class="panch-val">२०८२</div></div>`;
+}
+
+/* ═══ CALENDAR ═══ */
+function renderCalendar(){
+  document.getElementById('calMonthNe').textContent=NM[curM]+' '+nn(curY);
+  document.getElementById('calMonthEn').textContent=NME[curM]+' '+curY;
+  const md=mdays(curY), dim=md[curM];
+  const startAd=bsToAd(curY,curM,1);
+  const startDow=startAd.getDay();
+  let html='';
+  const prevDim=curM>0?md[curM-1]:mdays(curY-1)[11];
+  for(let i=0;i<startDow;i++) html+=`<div class="day-cell other-month"><div class="bs-num">${nn(prevDim-startDow+i+1)}</div></div>`;
+  let adP=new Date(startAd);
+  for(let d=1;d<=dim;d++){
+    const dow=adP.getDay();
+    const isToday=todayBs&&curY===todayBs.y&&curM===todayBs.m&&d===todayBs.d;
+    const hols=holsOn(curM,d);
+    const isHol=hols.length>0;
+    const hasRem=reminders.some(r=>{const rd=new Date(r.date);return rd.toDateString()===adP.toDateString();});
+    let cls='day-cell';
+    if(dow===0)cls+=' sun';
+    if(dow===6)cls+=' sat';
+    if(isToday)cls+=' today';
+    if(isHol)cls+=' holiday';
+    html+=`<div class="${cls}" onclick="openDetail(${curY},${curM},${d},${dow})">
+      <div class="bs-num">${nn(d)}</div>
+      <div class="en-num">${adP.getDate()}</div>
+      ${isHol?`<div class="h-icon">${hols[0].icon}</div>`:''}
+      ${hasRem?'<div class="r-dot"></div>':''}
+    </div>`;
+    adP.setDate(adP.getDate()+1);
+  }
+  let total=startDow+dim,nd=1;
+  while(total%7!==0){html+=`<div class="day-cell other-month"><div class="bs-num">${nn(nd)}</div></div>`;total++;nd++;}
+  document.getElementById('calDays').innerHTML=html;
+}
+function prevMonth(){curM--;if(curM<0){curM=11;curY--;}renderCalendar();}
+function nextMonth(){curM++;if(curM>11){curM=0;curY++;}renderCalendar();}
+function goToToday(){curY=todayBs.y;curM=todayBs.m;renderCalendar();nav('sec-home','nav-home');toast('📅 '+nn(todayBs.d)+' '+NM[todayBs.m]+' – Today');}
+
+/* ═══ UPCOMING ═══ */
+function renderUpcoming(){
+  const todayAd=new Date();todayAd.setHours(0,0,0,0);
+  const upcoming=allHols().filter(h=>{
+    const hAd=bsToAd(2082,h.m,h.d);
+    return hAd>=todayAd;
+  }).sort((a,b)=>a.m!==b.m?a.m-b.m:a.d-b.d).slice(0,8);
+  document.getElementById('upcomingStrip').innerHTML=upcoming.map(h=>{
+    const hAd=bsToAd(2082,h.m,h.d);
+    const diff=Math.round((hAd-todayAd)/86400000);
+    return`<div class="upcoming-chip" onclick="openDetail(2082,${h.m},${h.d},${hAd.getDay()})">
+      <div class="uc-days">${diff===0?'TODAY!':diff+' days'}</div>
+      <div class="uc-name">${h.icon} ${h.name}</div>
+      <div class="uc-date">${nn(h.d)} ${NM[h.m]}</div>
+    </div>`;
+  }).join('')||'<div style="color:var(--text3);padding:10px;font-size:13px;">No more holidays this year</div>';
+}
+
+/* ═══ DAY DETAIL ═══ */
+function openDetail(bsY,bsM,bsD,dow){
+  const adDate=bsToAd(bsY,bsM,bsD);
+  const hols=holsOn(bsM,bsD);
+  const p=panch(adDate);
+  const isToday=todayBs&&bsY===todayBs.y&&bsM===todayBs.m&&bsD===todayBs.d;
+  const dayRems=reminders.filter(r=>new Date(r.date).toDateString()===adDate.toDateString());
+  const adDateStr=adDate.toISOString().split('T')[0];
+
+  let holHtml=hols.length?`<div class="det-sec">
+    <div class="det-sec-title">🎉 Holidays</div>
+    ${hols.map(h=>`<div class="hol-item"><div class="hol-item-icon">${h.icon}</div>
+      <div><div class="hol-item-name">${h.name}</div>
+      <div class="hol-item-type" style="font-family:'Tiro Devanagari Hindi',serif;">${h.ne}</div>
+      <div class="hol-item-type">${h.type==='rajpatra'?'📋 Official Raj Patra':'🎊 Festival'}</div></div></div>`).join('')}
+  </div>`:'';
+
+  let remHtml=dayRems.length?`<div class="det-sec">
+    <div class="det-sec-title">⏰ Your Reminders</div>
+    ${dayRems.map(r=>`<div class="hol-item" style="border-color:rgba(217,119,6,0.3);background:rgba(217,119,6,0.07);">
+      <div class="hol-item-icon">${remIcon(r.type)}</div>
+      <div><div class="hol-item-name" style="color:var(--gold-light);">${r.title}</div>
+      <div class="hol-item-type">${r.time||'All day'}${r.note?' · '+r.note:''}</div></div></div>`).join('')}
+  </div>`:'';
+
+  const dowIdx=typeof dow==='number'?dow:adDate.getDay();
+  const dayColor=dowIdx===0?'color:var(--sun);':dowIdx===6?'color:var(--sat);':'';
+
+  document.getElementById('modalContent').innerHTML=`
+    <div class="det-head">
+      <div class="det-bs" style="${hols.length?'color:var(--sun);':''}">${nn(bsD)}</div>
+      <div class="det-info">
+        <div class="det-wd" style="${dayColor}">${ND[dowIdx]}</div>
+        <div class="det-my">${NM[bsM]} ${nn(bsY)} BS</div>
+        <div class="det-en">${adDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</div>
+        <div class="det-chips">
+          ${isToday?'<span class="chip chip-today">● Today</span>':''}
+          ${hols.length?'<span class="chip chip-hol">🎉 Holiday</span>':''}
+        </div>
+      </div>
+    </div>
+    ${holHtml}${remHtml}
+    <div class="det-sec">
+      <div class="det-sec-title">📿 Panchang</div>
+      <div class="tithi-grid">
+        <div class="tithi-box"><div class="tithi-lbl">तिथि</div><div class="tithi-val">${p.tithi}</div></div>
+        <div class="tithi-box"><div class="tithi-lbl">नक्षत्र</div><div class="tithi-val">${p.nakshatra}</div></div>
+        <div class="tithi-box"><div class="tithi-lbl">योग</div><div class="tithi-val">${p.yoga}</div></div>
+        <div class="tithi-box"><div class="tithi-lbl">करण</div><div class="tithi-val">${p.karana}</div></div>
+      </div>
+    </div>
+    <div class="det-sec">
+      <div class="det-sec-title">➕ Actions</div>
+      <button class="act-btn" onclick="quickRem('${adDateStr}')">⏰ Add Reminder for this day</button>
+      <button class="act-btn" onclick="shareDate(${bsY},${bsM},${bsD})">🔗 Share this date</button>
+    </div>`;
+  document.getElementById('detailModal').classList.add('open');
+}
+function closeModalOutside(e){if(e.target===document.getElementById('detailModal'))closeDetailModal();}
+function closeDetailModal(){document.getElementById('detailModal').classList.remove('open');}
+function quickRem(ds){closeDetailModal();nav('sec-reminders','nav-reminders');document.getElementById('remDate').value=ds;document.getElementById('remTitle').focus();toast('📅 Date set – add reminder title');}
+function shareDate(y,m,d){const t=`${nn(d)} ${NM[m]} ${nn(y)} BS – नया पात्रो 🇳🇵`;navigator.share?navigator.share({title:'Naya Patro',text:t}):(navigator.clipboard?.writeText(t),toast('📋 Copied!'));}
+
+/* ═══ HOLIDAYS LIST ═══ */
+function renderHolidays(){
+  const byM={};
+  allHols().forEach(h=>{(byM[h.m]=byM[h.m]||[]).push(h);});
+  let html='';
+  for(let m=0;m<12;m++){
+    if(!byM[m])continue;
+    byM[m].sort((a,b)=>a.d-b.d);
+    html+=`<div class="month-group"><div class="month-group-title">${NM[m]} — ${NME[m]}</div>
+      ${byM[m].map(h=>{
+        const ad=bsToAd(2082,h.m,h.d);
+        return`<div class="hol-card ${h.type}" onclick="openDetail(2082,${h.m},${h.d},${ad.getDay()})">
+          <div class="hc-date"><div class="hc-bs">${nn(h.d)}</div><div class="hc-mn">${NME[h.m].slice(0,3).toUpperCase()}</div></div>
+          <div class="hc-info"><div class="hc-name">${h.icon} ${h.name}</div><div class="hc-name-ne">${h.ne}</div></div>
+          <span class="badge ${h.type==='rajpatra'?'badge-r':'badge-f'}">${h.type==='rajpatra'?'RAJ PATRA':'FESTIVAL'}</span>
+        </div>`;
+      }).join('')}</div>`;
+  }
+  document.getElementById('holidayList').innerHTML=html;
+  document.getElementById('statH').textContent=allHols().length;
+}
+
+/* ═══ REMINDERS ═══ */
+function remIcon(t){return{personal:'👤',work:'💼',health:'🏥',festival:'🎊',birthday:'🎂',anniversary:'💑',other:'📌'}[t]||'📌';}
+
+function addReminder(){
+  const title=document.getElementById('remTitle').value.trim();
+  const date=document.getElementById('remDate').value;
+  const time=document.getElementById('remTime').value;
+  const type=document.getElementById('remType').value;
+  const note=document.getElementById('remNote').value.trim();
+  const notify=document.getElementById('remNotifTog').classList.contains('on');
+  if(!title){toast('⚠️ Enter a title');return;}
+  if(!date){toast('⚠️ Select a date');return;}
+  const rem={id:Date.now(),title,date,time,type,note,notify};
+  reminders.push(rem);
+  reminders.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  localStorage.setItem('rems',JSON.stringify(reminders));
+  if(notify)schedNotif(rem);
+  ['remTitle','remDate','remTime','remNote'].forEach(id=>document.getElementById(id).value='');
+  renderReminders();updateStats();renderCalendar();
+  toast('✅ Reminder saved!');
+  addNotif('⏰ Reminder Added',`"${title}" on ${new Date(date).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`);
+}
+
+function deleteRem(id){
+  reminders=reminders.filter(r=>r.id!==id);
+  localStorage.setItem('rems',JSON.stringify(reminders));
+  renderReminders();updateStats();renderCalendar();toast('🗑️ Deleted');
+}
+
+function renderReminders(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const up=reminders.filter(r=>new Date(r.date)>=today);
+  const past=reminders.filter(r=>new Date(r.date)<today);
+  let html='';
+  if(!up.length&&!past.length){
+    html=`<div class="empty-state"><div class="empty-icon">⏰</div><div>No reminders yet.<br>Add one above!</div></div>`;
+  } else {
+    if(up.length){html+=`<div class="strip-title" style="margin-bottom:8px;">📌 UPCOMING</div>`;html+=up.map(r=>remHtml(r)).join('');}
+    if(past.length){html+=`<div class="strip-title" style="margin:12px 0 8px;color:var(--text3);">✓ PAST</div>`;html+=past.map(r=>remHtml(r,true)).join('');}
+  }
+  document.getElementById('reminderList').innerHTML=html;
+  document.getElementById('statR').textContent=up.length;
+}
+
+function remHtml(r,past=false){
+  const d=new Date(r.date);
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.round((d-today)/86400000);
+  const dt=diff===0?'Today!':diff===1?'Tomorrow':past?d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):`In ${diff} days`;
+  return`<div class="rem-item" style="${past?'opacity:0.5;':''}">
+    <div class="rem-icon">${remIcon(r.type)}</div>
+    <div class="rem-info">
+      <div class="rem-title">${r.title}</div>
+      <div class="rem-meta">${dt} · ${d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}${r.time?' at '+r.time:''}${r.note?' · '+r.note:''}</div>
+    </div>
+    <button class="rem-del" onclick="deleteRem(${r.id})">🗑️</button>
+  </div>`;
+}
+
+function schedNotif(rem){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const d=new Date(rem.date+(rem.time?'T'+rem.time:'T09:00'));
+  const t=new Date(d);t.setDate(t.getDate()-1);t.setHours(8,0,0,0);
+  const delay=t-new Date();
+  if(delay>0&&delay<604800000)setTimeout(()=>new Notification('Naya Patro ⏰',{body:`Tomorrow: ${rem.title}`}),delay);
+}
+
+/* ═══ RAJ PATRA ═══ */
+const RP_NOTICES=[
+  {title:"Vijaya Dashami 2082 – Official Holiday",date:"Oct 2025",type:"new",src:"rajpatra.dop.gov.np"},
+  {title:"Tihar 3 Days Public Holiday 2082",date:"Oct 2025",type:"new",src:"rajpatra.dop.gov.np"},
+  {title:"Republic Day 2082 – Holiday Declared",date:"May 2025",type:"old",src:"rajpatra.dop.gov.np"},
+  {title:"Nepali New Year 2082 Holiday",date:"Apr 2025",type:"old",src:"rajpatra.dop.gov.np"},
+  {title:"Maha Shivaratri 2082 – Government Holiday",date:"Feb 2025",type:"old",src:"rajpatra.dop.gov.np"},
+];
+function renderRpList(){
+  document.getElementById('rpList').innerHTML=RP_NOTICES.map(n=>`
+    <div class="rp-item">
+      <div class="rp-dot ${n.type}"></div>
+      <div><div class="rp-item-title">${n.title}</div><div class="rp-item-date">${n.date}</div>
+      <a class="rp-item-link" href="https://${n.src}" target="_blank">📎 ${n.src}</a></div>
+    </div>`).join('');
+}
+function manualRefresh(){toast('✅ Holidays up to date!');addNotif('📋 Raj Patra','All 2082 BS holidays synced.');}
+
+/* ═══ NOTIFICATIONS ═══ */
+function addNotif(title,body){
+  const n={id:Date.now(),title,body,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),read:false};
+  notifs.unshift(n);
+  if(notifs.length>50)notifs.pop();
+  localStorage.setItem('notifs',JSON.stringify(notifs));
+  renderNotifs();
+}
+function renderNotifs(){
+  const unread=notifs.filter(n=>!n.read).length;
+  document.getElementById('notifDot').style.display=unread?'block':'none';
+  document.getElementById('notifList').innerHTML=notifs.length?
+    notifs.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="markRead(${n.id})">
+      <div class="notif-ico">🔔</div>
+      <div><div class="notif-t">${n.title}</div><div class="notif-b">${n.body}</div><div class="notif-time">${n.time}</div></div>
+    </div>`).join(''):
+    '<div style="padding:30px;text-align:center;color:var(--text3);">No notifications yet 🔕</div>';
+}
+function markRead(id){notifs=notifs.map(n=>n.id===id?{...n,read:true}:n);localStorage.setItem('notifs',JSON.stringify(notifs));renderNotifs();}
+function toggleNotifPanel(){
+  document.getElementById('notifPanel').classList.toggle('open');
+  setTimeout(()=>{notifs=notifs.map(n=>({...n,read:true}));localStorage.setItem('notifs',JSON.stringify(notifs));renderNotifs();},2000);
+}
+function closeNotifPanel(){document.getElementById('notifPanel').classList.remove('open');}
+
+function checkDailyNotif(){
+  const last=localStorage.getItem('lastCheck');
+  const today=new Date().toDateString();
+  if(last===today)return;
+  localStorage.setItem('lastCheck',today);
+  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+  const tmrBs=adToBs(tmr);
+  holsOn(tmrBs.m,tmrBs.d).forEach(h=>{
+    addNotif('🎉 Holiday Tomorrow!',`${h.ne} – ${h.name}`);
+    if(Notification.permission==='granted') new Notification('नया पात्रो 🎉',{body:`Holiday Tomorrow: ${h.name}`});
+  });
+  addNotif('🌅 Good Morning!',`${ND[new Date().getDay()]} | ${nn(todayBs?.d)} ${NM[todayBs?.m]} ${nn(todayBs?.y)}`);
+}
+
+/* ═══ PUSH NOTIFS ═══ */
+function askNotif(){
+  if(!('Notification' in window)){toast('❌ Browser doesn\'t support notifications');return;}
+  Notification.requestPermission().then(p=>{
+    updateNotifStatus();
+    if(p==='granted'){
+      toast('✅ Notifications enabled!');
+      new Notification('नया पात्रो 🇳🇵',{body:'You will now get holiday & reminder alerts!'});
+      addNotif('✅ Notifications On','Holiday reminders & daily panchang alerts enabled.');
+    } else toast('⚠️ Allow notifications in browser settings');
+  });
+}
+function updateNotifStatus(){
+  const el=document.getElementById('notifStatus');
+  if(!el)return;
+  const p=typeof Notification!=='undefined'?Notification.permission:'default';
+  el.textContent=p==='granted'?'✅ Enabled':p==='denied'?'❌ Blocked (allow in settings)':'Tap to enable';
+}
+
+/* ═══ CUSTOM HOLIDAY ═══ */
+function addCustomHoliday(){
+  const name=prompt('Holiday name in English:');
+  if(!name)return;
+  const ne=prompt('Holiday name in Nepali (optional):') || name;
+  const m=parseInt(prompt('Month number (1-12 in BS):\n1=बैशाख 2=जेठ 3=असार 4=श्रावण 5=भाद्र 6=आश्विन 7=कार्तिक 8=मंसिर 9=पुष 10=माघ 11=फाल्गुन 12=चैत'))-1;
+  const d=parseInt(prompt('Day number:'));
+  if(isNaN(m)||isNaN(d)){toast('❌ Invalid input');return;}
+  const hol={m,d,name,ne,type:'rajpatra',icon:'📋',custom:true};
+  customHols.push(hol);
+  localStorage.setItem('cHols',JSON.stringify(customHols));
+  renderHolidays();renderCalendar();renderUpcoming();
+  toast(`✅ "${name}" added!`);
+  addNotif('📋 New Holiday Added',`${name} – ${nn(d)} ${NM[m]}`);
+}
+
+/* ═══ SETTINGS ═══ */
+function save(k,v){localStorage.setItem('s_'+k,v);}
+function exportRem(){
+  if(!reminders.length){toast('No reminders to export');return;}
+  const txt=reminders.map(r=>`${r.title} | ${r.date} ${r.time||''} | ${r.type} | ${r.note||''}`).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download='naya-patro-reminders.txt';a.click();
+  toast('📤 Exported!');
+}
+function clearData(){
+  if(!confirm('Clear all reminders and notifications?'))return;
+  reminders=[];notifs=[];
+  localStorage.clear();
+  renderReminders();renderNotifs();updateStats();
+  toast('🗑️ Cleared');
+}
+function shareApp(){
+  const d={title:'नया पात्रो',text:'Beautiful Nepali Calendar – Naya Patro 🇳🇵',url:location.href};
+  navigator.share?navigator.share(d):(navigator.clipboard?.writeText(location.href),toast('🔗 Link copied!'));
+}
+
+/* ═══ PWA INSTALL ═══ */
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredInstall=e;
+  document.getElementById('installBanner').style.display='flex';
+});
+function installPWA(){
+  if(deferredInstall){deferredInstall.prompt();deferredInstall.userChoice.then(r=>{if(r.outcome==='accepted'){toast('✅ Installed!');document.getElementById('installBanner').style.display='none';}});}
+  else toast('📱 Tap browser menu ▶ "Add to Home Screen"');
+}
+
+/* ═══ NAV & UTILS ═══ */
+function nav(sec,navId){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sec)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(navId)?.classList.add('active');
+  window.scrollTo(0,0);
+}
+function updateStats(){
+  document.getElementById('statH').textContent=allHols().length;
+  const today=new Date();today.setHours(0,0,0,0);
+  document.getElementById('statR').textContent=reminders.filter(r=>new Date(r.date)>=today).length;
+}
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// Swipe right to close notif panel
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{if(e.changedTouches[0].clientX-tx>60)closeNotifPanel();},{passive:true});
+
+// PWA manifest inject
+const mf=document.createElement('link');
+mf.rel='manifest';
+const mfData={name:"नया पात्रो – Naya Patro",short_name:"नया पात्रो",start_url:"./",display:"standalone",background_color:"#0c0a0a",theme_color:"#b91c1c",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23b91c1c'/><text y='130' x='96' text-anchor='middle' font-size='100'>🗓️</text></svg>",sizes:"192x192",type:"image/svg+xml"}]};
+mf.href=URL.createObjectURL(new Blob([JSON.stringify(mfData)],{type:'application/json'}));
+document.head.appendChild(mf);
+
+window.addEventListener('load',init);
+</script>
+</body>
+</html>
